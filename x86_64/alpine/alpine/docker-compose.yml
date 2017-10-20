@@ -2,5 +2,6 @@ version: '3'
 services:
   server:
     image: tokinring/alpine
-    restart: "always"
+    stdin_open: true
+    tty: true
     command: ["sh"]
