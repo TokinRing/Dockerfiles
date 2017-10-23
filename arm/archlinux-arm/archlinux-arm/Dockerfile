@@ -1,5 +1,5 @@
 # Arch Linux ARM (Raspberry Pi 2)
-FROM scratch AS
+FROM scratch
 MAINTAINER TokinRing <support@gnetsolutions.net>
 LABEL Description="Arch Linux ARM (Raspberry Pi 2)" Repository="armv7/armhf-archlinux"
 
