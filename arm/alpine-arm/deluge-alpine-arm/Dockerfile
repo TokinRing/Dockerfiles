@@ -9,7 +9,7 @@ COPY ./config/deluge-web.conf /root/.config/deluge/web.conf
 COPY ./config/deluge-blocklist.conf /root/.config/deluge/blocklist.conf
 COPY ./config/torrc /etc/tor/
 
-RUN mkdir /var/lib/tor/.tor; chown -R tor /{var/lib,etc}/tor
+RUN mkdir /var/lib/tor/.tor; chown -R tor /var/lib/tor /etc/tor
 
 EXPOSE 8112 54889
 
