@@ -12,6 +12,8 @@
 ## Tor will look for this file in various places based on your platform:
 ## https://www.torproject.org/docs/faq#torrc
 
+RunAsDaemon 0
+
 ## Tor opens a SOCKS proxy on port 9050 by default -- even if you don't
 ## configure one below. Set "SOCKSPort 0" if you plan to run Tor only
 ## as a relay, and not make any local application connections yourself.
@@ -212,4 +214,3 @@ DataDirectory /var/lib/tor
 ## The %include option can be used recursively.
 #%include /etc/torrc.d/
 #%include /etc/torrc.custom
-
