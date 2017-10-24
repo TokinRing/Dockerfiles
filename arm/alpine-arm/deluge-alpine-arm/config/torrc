@@ -13,6 +13,7 @@
 ## https://www.torproject.org/docs/faq#torrc
 
 RunAsDaemon 0
+User root
 
 ## Tor opens a SOCKS proxy on port 9050 by default -- even if you don't
 ## configure one below. Set "SOCKSPort 0" if you plan to run Tor only
