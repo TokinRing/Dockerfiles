@@ -1,7 +1,7 @@
 version: '3'
 services:
   server:
-    image: tokinring/alpine-arm
+    image: tokinring/deluge-alpine-arm
     stdin_open: true
     tty: true
-    command: ["sh", "-c", "set -e; printf 'http://mirror.clarkson.edu/alpine/edge/testing\n' >> /etc/apk/repositories; apk update; apk --no-cache add deluge boost-python"]
+    command: ["supervisord", "-c", "/etc/supervisord.conf"]
