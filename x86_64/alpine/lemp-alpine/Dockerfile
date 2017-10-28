@@ -1,4 +1,4 @@
-FROM tokinring/alpine-arm
+FROM tokinring/alpine
 MAINTAINER TokinRing [support@gnetsolutions.net]
 
 RUN apk --no-cache add libressl mariadb mariadb-client nginx supervisor php7-fpm php7-mysqli php7-pdo_mysql tzdata && mkdir /www && printf "<? phpinfo(); ?>" > /www/index.php && cp /usr/share/zoneinfo/America/Los_Angeles /etc/localtime && printf "America/Los_Angeles" > /etc/timezone && mkdir /run/mysqld && chown mysql /run/mysqld
