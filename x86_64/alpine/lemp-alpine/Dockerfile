@@ -1,16 +1,23 @@
 FROM tokinring/alpine
 MAINTAINER TokinRing [support@gnetsolutions.net]
 
-RUN apk --no-cache add libressl mariadb mariadb-client nginx supervisor php7-fpm php7-mysqli php7-pdo_mysql tzdata && mkdir /www && printf "<? phpinfo(); ?>" > /www/index.php && cp /usr/share/zoneinfo/America/Los_Angeles /etc/localtime && printf "America/Los_Angeles" > /etc/timezone && mkdir /run/mysqld && chown mysql /run/mysqld
-
-RUN export DATABASE_PASS="SuperSecretPassword" && su mysql -s /bin/sh -c "mysql_install_db --user=mysql --datadir=/var/lib/mysql" && su mysql -s /bin/sh -c "mysqld &" && sleep 10 && mysqladmin -u root password "$DATABASE_PASS" && mysql -u root -p"$DATABASE_PASS" -e "UPDATE mysql.user SET Password=PASSWORD('$DATABASE_PASS') WHERE User='root'" && mysql -u root -p"$DATABASE_PASS" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')" && mysql -u root -p"$DATABASE_PASS" -e "DELETE FROM mysql.user WHERE User=''" && mysql -u root -p"$DATABASE_PASS" -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%'" && mysql -u root -p"$DATABASE_PASS" -e "FLUSH PRIVILEGES" && mysqld stop
+RUN printf 'http://mirror.clarkson.edu/alpine/edge/testing\n' >> /etc/apk/repositories && apk --no-cache add bash gosu libressl mariadb mariadb-client nginx php7-fpm php7-mysqli php7-pdo_mysql supervisor tzdata && cp /usr/share/zoneinfo/America/Los_Angeles /etc/localtime && printf "America/Los_Angeles" > /etc/timezone && mkdir /run/mysqld && chown mysql /run/mysqld && mkdir /run/nginx
 
 EXPOSE 80
 
 COPY ./config/supervisord.conf /etc/
 COPY ./config/dhparam.pem /etc/ssl/
 COPY ./config/nginx.conf /etc/nginx/
-COPY ./config/nginx-default.conf /etc/nginx/conf.d/
+COPY ./config/nginx-www.conf /etc/nginx/conf.d/default.conf
+COPY ./config/php-fpm.conf /etc/php7/
+COPY ./config/php-fpm.d-www.conf /etc/php7/php-fpm.d/www.conf
 COPY ./config/my.cnf /etc/mysql/
+COPY entrypoint.sh /usr/local/bin/
 
-CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+#VOLUME /var/lib/mysql
+#VOLUME /www
+
+#RUN touch /var/log/supervisord.log && chown root /var/log/supervisord.log && chmod o+w /var/log/supervisord.log
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+#CMD ["supervisord", "-c", "/etc/supervisord.conf"]
